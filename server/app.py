@@ -40,14 +40,18 @@ def search_video():
     end = video_node.metadata["end"]
 
     stream_url = video.generate_stream(timeline=[(start, end)])
-    return jsonify({'stream_url': stream_url})
+
+    return jsonify({'stream_url': str(stream_url)})
 
 @app.route('/search_query', methods=['POST'])
 def search_query():
     query = request.json['query']
     response = query_engine.query(query)
-    return jsonify({"response":response})
+    serializable_response = {
+        "response": str(response)
+    }
+    return jsonify(serializable_response)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)

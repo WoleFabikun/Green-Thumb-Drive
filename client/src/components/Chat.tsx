@@ -8,25 +8,57 @@ import { Card,
   CardHeader,
   CardTitle, } from "./ui/card"
 import { cn } from "@/lib/utils"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import ChatCard from "./ChatCard"
 import { AspectRatio } from "@radix-ui/react-aspect-ratio"
+import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
+import ReactPlayer from 'react-player'
 
 type CardProps = React.ComponentProps<typeof Card>
 
 const Chat = ({ className, ...props }: CardProps) => {
-  const [query, setQuery] = useState('')
-  const [messages, setMessages] = useState([])
-  const [loading, setIsLoading] = useState(false)
+  const [query, setQuery] = useState('');
+  const [response, setResponse] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
+  const [loading, setIsLoading] = useState(false);
+
 
   const sendMessage = async () => {
-    if (!query.length || loading) return
+    if (!query.length || loading) return;
+    setIsLoading(true);
 
-    setIsLoading(true)
+    try {
+      const responsePromise = fetch('http://localhost:8080/search_query', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
 
-    
-    
-  }
+      const videoPromise = fetch('http://localhost:8080/search_video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      const [responseData, videoData] = await Promise.all([
+        responsePromise.then((res) => res.json()),
+        videoPromise.then((res) => res.json()),
+      ]);
+
+      setResponse(responseData.response);
+      setVideoUrl(videoData.stream_url);
+      setQuery('');
+    } catch (error) {
+      console.error('Error searching:', error);
+    }
+
+    setIsLoading(false);
+  };
 
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -41,9 +73,7 @@ const Chat = ({ className, ...props }: CardProps) => {
   }
 
   //messages example for testing the ui
-  const messagesTest = [
-    { content: "Hello, how can I help you today?" }
-  ]
+  const responseTest = "This is a test response"
 
 
   return (
@@ -55,19 +85,23 @@ const Chat = ({ className, ...props }: CardProps) => {
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className=" flex items-center space-x-4 rounded-md border p-4">
-          <AspectRatio ratio={16 / 9} className="w-full h-full">
-            <iframe className='w-full h-full' src="https://www.youtube.com/embed/1y_kfWUCFDQ" allowFullScreen/>
-          </AspectRatio>
+        <ReactPlayer url={videoUrl} controls width="100%" height="100%" />
         </div>
 
       </CardContent>
     </Card>
       </div>
       <div className="pt-6">
-        <ChatCard messages={messagesTest}/>
+        <ChatCard response={response}/>
       </div>
       <div className="flex flex-col w-full items-center pt-6">
-        <InputWithButton/>
+          <InputWithButton
+        value={query}
+        onChange={handleInput}
+        onKeyDown={handleKeyDown}
+        onSubmit={sendMessage}
+        loading={loading}
+        />
       </div>
     </div>
   )
