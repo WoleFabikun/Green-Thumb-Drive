@@ -1,8 +1,6 @@
 "use client"
 
-import { BellRing, Check } from "lucide-react"
 import { InputWithButton } from "./UserInput"
-import { Button } from "./ui/button"
 import { Card,
   CardContent,
   CardDescription,
@@ -10,15 +8,15 @@ import { Card,
   CardHeader,
   CardTitle, } from "./ui/card"
 import { cn } from "@/lib/utils"
-import { Embed } from 'semantic-ui-react'
 import { useState } from "react"
+import ChatCard from "./ChatCard"
+import { AspectRatio } from "@radix-ui/react-aspect-ratio"
 
 type CardProps = React.ComponentProps<typeof Card>
 
-
-
 const Chat = ({ className, ...props }: CardProps) => {
   const [query, setQuery] = useState('')
+  const [messages, setMessages] = useState([])
   const [loading, setIsLoading] = useState(false)
 
   const sendMessage = async () => {
@@ -42,42 +40,33 @@ const Chat = ({ className, ...props }: CardProps) => {
     }
   }
 
+  //messages example for testing the ui
+  const messagesTest = [
+    { content: "Hello, how can I help you today?" }
+  ]
+
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
       <div>
-      <Card className={cn("w-[380px]", className)} {...props}>
+      <Card className={cn("w-[600px]", className)} {...props}>
       <CardHeader>
         <CardTitle>Video</CardTitle>
-        <CardDescription>You have 3 unread messages.</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
         <div className=" flex items-center space-x-4 rounded-md border p-4">
-        <Embed
-    autoplay={false}
-    color='white'
-    hd={false}
-    id='gJscrxxl_Bg'
-    iframe={{
-      allowFullScreen: false,
-      style: {
-        padding: 10,
-      },
-    }}
-    placeholder=''
-    source='vimeo'
-  />
+          <AspectRatio ratio={16 / 9} className="w-full h-full">
+            <iframe className='w-full h-full' src="https://www.youtube.com/embed/1y_kfWUCFDQ" allowFullScreen/>
+          </AspectRatio>
         </div>
 
       </CardContent>
-      <CardFooter>
-        <Button className="w-full">
-          <Check className="mr-2 h-4 w-4" /> Mark all as read
-        </Button>
-      </CardFooter>
     </Card>
       </div>
-      <div className="flex flex-col w-full items-center pt-10">
+      <div className="pt-6">
+        <ChatCard messages={messagesTest}/>
+      </div>
+      <div className="flex flex-col w-full items-center pt-6">
         <InputWithButton/>
       </div>
     </div>
