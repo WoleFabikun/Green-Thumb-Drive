@@ -14,7 +14,7 @@ export interface ChatCardProps {
 const ChatCard = ({ response, className }: ChatCardProps) => {
   return (
     <div>
-      <Card className={cn('w-[600px]', className)}>
+      <Card className={cn('lg:w-[800px] sm:w-screen md:w-screen', className)}>
         <CardContent className="grid gap-4 pt-4">
           <div>
             <div className="flex items-center rounded-md border p-4">

@@ -79,7 +79,7 @@ const Chat = ({ className, ...props }: CardProps) => {
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
       <div>
-      <Card className={cn("w-[600px]", className)} {...props}>
+      <Card className={cn("lg:w-[800px] sm:w-screen md:w-screen", className)} {...props}>
       <CardHeader>
         <CardTitle>Video</CardTitle>
       </CardHeader>
