@@ -77,7 +77,7 @@ const Chat = ({ className, ...props }: CardProps) => {
     <div className="-mt-10 h-full flex flex-col items-center justify-center">
       <div>
         <Card
-          className={cn("lg:w-[800px] w-screen", className)}
+          className={cn("lg:w-[800px] md:w-[650px] sm:w-[500px] w-[500px]", className)}
           {...props}
         >
           <CardHeader>
