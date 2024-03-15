@@ -45,7 +45,7 @@ pip install -r requirements.txt
 Set up environment variables:
 
 - Create a `.env` file in the root directory
-- Add the required environment variables. You will need an OPENAI_API_KEY and a VideoDB API.
+- Add the required environment variables. You will need an [OPENAI api key](https://openai.com/blog/openai-api) and a [VideoDB api key](https://videodb.io/)
 
 Start the development server:
 ```bash
