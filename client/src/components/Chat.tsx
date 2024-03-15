@@ -3,17 +3,14 @@
 import { InputWithButton } from "./UserInput"
 import { Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle, } from "./ui/card"
 import { cn } from "@/lib/utils"
-import { useState, useRef, useEffect } from "react"
+import { useState } from "react"
 import ChatCard from "./ChatCard"
-import { AspectRatio } from "@radix-ui/react-aspect-ratio"
-import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
 import ReactPlayer from 'react-player'
+import { AspectRatio } from "@/components/ui/aspect-ratio"
+import { SkeletonCard } from "@/components/SkeletonCard"
 
 type CardProps = React.ComponentProps<typeof Card>
 
@@ -77,34 +74,41 @@ const Chat = ({ className, ...props }: CardProps) => {
 
 
   return (
-    <div className='h-screen flex flex-col items-center justify-center'>
+    <div className="-mt-10 h-full flex flex-col items-center justify-center">
       <div>
-      <Card className={cn("lg:w-[800px] sm:w-screen md:w-screen", className)} {...props}>
-      <CardHeader>
-        <CardTitle>Video</CardTitle>
-      </CardHeader>
-      <CardContent className="grid gap-4">
-        <div className=" flex items-center space-x-4 rounded-md border p-4">
-        <ReactPlayer url={videoUrl} controls width="100%" height="100%" />
-        </div>
-
-      </CardContent>
-    </Card>
+        <Card
+          className={cn("lg:w-[800px] w-screen", className)}
+          {...props}
+        >
+          <CardHeader>
+          </CardHeader>
+          <CardContent className="grid gap-4 h-full w-full">
+            {loading ? (
+              <SkeletonCard />
+            ) : (
+              <div className="flex items-center rounded-md border ">
+                <AspectRatio ratio={16 / 9}>
+                  <ReactPlayer url={videoUrl} controls width="100%" height="100%" />
+                </AspectRatio>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
       <div className="pt-6">
-        <ChatCard response={response}/>
+        <ChatCard response={response} />
       </div>
       <div className="flex flex-col w-full items-center pt-6">
-          <InputWithButton
-        value={query}
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
-        onSubmit={sendMessage}
-        loading={loading}
+        <InputWithButton
+          value={query}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          onSubmit={sendMessage}
+          loading={loading}
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Chat

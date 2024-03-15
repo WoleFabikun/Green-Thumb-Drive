@@ -1,5 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "./Spinner";
+import { FadeLoader } from "react-spinners";
+import { LoaderCircle } from "lucide-react";
 
 interface InputWithButtonProps {
   value: string;
@@ -26,7 +29,7 @@ export function InputWithButton({
         onKeyDown={onKeyDown}
       />
       <Button type="submit" onClick={onSubmit} disabled={loading}>
-        {loading ? "Sending..." : "Send"}
+        {loading ? <LoaderCircle className="animate-spin"/> : "Send"}
       </Button>
     </div>
   );
