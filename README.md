@@ -48,6 +48,8 @@ Set up environment variables:
 - Add the required environment variables. You will need an [OPENAI api key](https://openai.com/blog/openai-api) and a [VideoDB api key](https://videodb.io/)
 
 Start the development server:
+
+Be sure to have the flask backend running.
 ```bash
 // (or npm run dev)
 bun dev 
