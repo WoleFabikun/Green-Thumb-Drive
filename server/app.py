@@ -10,9 +10,20 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-videodb_api_key = os.environ['VIDEODB_API_KEY']
+#get api key from .env file
+videodb_api_key = os.getenv('VIDEODB_API_KEY')
 
 conn = connect(api_key=videodb_api_key)
+
+# after uploading a video through videodb website, index the spoken words
+# coll = conn.get_collection()
+
+# for video in coll.get_videos():
+#     try:
+#         video.index_spoken_words()
+#     except Exception as e:
+#         print(e)
+    
 
 retriever = VideoDBRetriever(api_key=videodb_api_key)
 
@@ -32,12 +43,17 @@ def search_video():
     coll = conn.get_collection()
     query = request.json['query']
     retrieved_nodes = retriever.retrieve(query)
-    
-    video_node = retrieved_nodes[0].node
-    video = coll.get_video(video_node.metadata["video_id"])
 
-    start = video_node.metadata["start"]
-    end = video_node.metadata["end"]
+    video_node = None
+
+    for nodeObj in retrieved_nodes:
+        if video_node is None or nodeObj.score > video_node.score:
+            video_node = nodeObj
+    
+    video = coll.get_video(video_node.node.metadata["video_id"])
+
+    start = video_node.node.metadata["start"]
+    end = video_node.node.metadata["end"]
 
     stream_url = video.generate_stream(timeline=[(start, end)])
 
