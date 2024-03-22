@@ -23,7 +23,6 @@ conn = connect(api_key=videodb_api_key)
 #         video.index_spoken_words()
 #     except Exception as e:
 #         print(e)
-    
 
 retriever = VideoDBRetriever(api_key=videodb_api_key)
 
