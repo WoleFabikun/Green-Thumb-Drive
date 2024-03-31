@@ -21,7 +21,7 @@ conn = connect(api_key=videodb_api_key)
 # for video in coll.get_videos():
 #     try:
 #         video.index_spoken_words()
-#     except Exception as e:
+#     except Exception as e
 #         print(e)
 
 retriever = VideoDBRetriever(api_key=videodb_api_key)
