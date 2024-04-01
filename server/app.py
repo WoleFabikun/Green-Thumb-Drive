@@ -34,7 +34,6 @@ query_engine = RetrieverQueryEngine(
     response_synthesizer=response_synthesizer,
 )
 
-# these are the endpoints for the frontend to call.
 
 # takes a query and returns video from the strongest node of the search result
 @app.route('/search_video', methods=['POST'])
