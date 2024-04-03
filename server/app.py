@@ -26,7 +26,7 @@ conn = connect(api_key=videodb_api_key)
 
 retriever = VideoDBRetriever(api_key=videodb_api_key)
 
-# use your llama_index response_synthesizer on search results. enable streaming here
+# use your llama_index response_synthesizer on search results. 
 response_synthesizer = get_response_synthesizer()
 
 query_engine = RetrieverQueryEngine(
