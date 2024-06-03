@@ -35,7 +35,6 @@ query_engine = RetrieverQueryEngine(
 )
 
 
-# takes a query and returns video from the strongest node of the search result
 @app.route('/search_video', methods=['POST'])
 def search_video():
     coll = conn.get_collection()
